@@ -15,6 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 CHAVE_PIX = "+5595981297185"   # chave do tipo telefone: (95) 98129-7185
 NOME = "ANA CLARA ALVARENGA"        # até 25 caracteres
 CIDADE = "BOA VISTA"           # até 15 caracteres
+BANCO = "Nubank"              # só aparece na imagem
 TXID = "***"                   # "***" = sem identificador específico
 # ---------------------------------------------------------------------------
 
@@ -63,7 +64,7 @@ def gerar_imagem(payload, arquivo, valor=None):
     img_qr = qr.make_image(fill_color="black", back_color="white").convert("RGB")
 
     w, h = img_qr.size
-    topo, rodape = 90, 110
+    topo, rodape = 90, 145
     img = Image.new("RGB", (w, h + topo + rodape), "white")
     img.paste(img_qr, (0, topo))
     d = ImageDraw.Draw(img)
@@ -82,6 +83,7 @@ def gerar_imagem(payload, arquivo, valor=None):
     centro(topo + h + 5, linha, pequena)
     centro(topo + h + 40, "Chave (celular): (95) 98129-7185", pequena)
     centro(topo + h + 72, NOME, pequena, "#555555")
+    centro(topo + h + 104, f"Banco: {BANCO}", pequena, "#820AD1")
     img.save(arquivo)
 
 
