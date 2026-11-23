@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 # ---- Configuração ----------------------------------------------------------
 CHAVE_PIX = "+5595981297185"   # chave do tipo telefone: (95) 98129-7185
-NOME = "VALCI MAMEDIO"         # até 25 caracteres
+NOME = "ANA CLARA ALVARENGA"        # até 25 caracteres
 CIDADE = "BOA VISTA"           # até 15 caracteres
 TXID = "***"                   # "***" = sem identificador específico
 # ---------------------------------------------------------------------------
