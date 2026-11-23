@@ -14,8 +14,8 @@ from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 # ---- Configuração ----------------------------------------------------------
 CHAVE_PIX = "+5595981297185"   # chave do tipo telefone: (95) 98129-7185
-NOME = "ANA CLARA ALVARENGA ESTRAPAZZON"  # nome completo, aparece na imagem
-NOME_PIX = "ANA CLARA A ESTRAPAZZON"      # vai dentro do QR Code (máx. 25 caracteres)
+NOME = "ANA CLARA ALVARENGA STRAPAZZON"  # nome completo, aparece na imagem
+NOME_PIX = "ANA CLARA A STRAPAZZON"      # vai dentro do QR Code (máx. 25 caracteres)
 CIDADE = "BOA VISTA"           # até 15 caracteres
 BANCO = "Nubank"              # só aparece na imagem
 LOGO = "logo_vmcar.png"       # logomarca clarinha no fundo
