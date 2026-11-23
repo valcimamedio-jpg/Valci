@@ -5,17 +5,21 @@ Uso:
     python3 gerar_pix.py              # QR Code sem valor (o cliente digita o valor)
     python3 gerar_pix.py 25.90        # QR Code com valor fixo de R$ 25,90
 """
+import os
 import sys
 import unicodedata
 
 import qrcode
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFont
 
 # ---- Configuração ----------------------------------------------------------
 CHAVE_PIX = "+5595981297185"   # chave do tipo telefone: (95) 98129-7185
-NOME = "ANA CLARA ALVARENGA"        # até 25 caracteres
+NOME = "ANA CLARA ALVARENGA ESTRAPAZZON"  # nome completo, aparece na imagem
+NOME_PIX = "ANA CLARA A ESTRAPAZZON"      # vai dentro do QR Code (máx. 25 caracteres)
 CIDADE = "BOA VISTA"           # até 15 caracteres
 BANCO = "Nubank"              # só aparece na imagem
+LOGO = "logo_vmcar.png"       # logomarca clarinha no fundo
+OPACIDADE_LOGO = 0.20         # 0 = invisível, 1 = forte (acima de ~0.3 pode atrapalhar a leitura)
 TXID = "***"                   # "***" = sem identificador específico
 # ---------------------------------------------------------------------------
 
@@ -48,7 +52,7 @@ def gerar_payload(valor=None):
         + _campo("53", "986")
         + (_campo("54", f"{valor:.2f}") if valor else "")
         + _campo("58", "BR")
-        + _campo("59", _limpa(NOME, 25))
+        + _campo("59", _limpa(NOME_PIX, 25))
         + _campo("60", _limpa(CIDADE, 15))
         + _campo("62", _campo("05", TXID))
         + "6304"
@@ -84,7 +88,19 @@ def gerar_imagem(payload, arquivo, valor=None):
     centro(topo + h + 40, "Chave (celular): (95) 98129-7185", pequena)
     centro(topo + h + 72, NOME, pequena, "#555555")
     centro(topo + h + 104, f"Banco: {BANCO}", pequena, "#820AD1")
+    if LOGO and os.path.exists(LOGO):
+        img = _aplica_logo(img, topo)
     img.save(arquivo)
+
+
+def _aplica_logo(img, topo=90):
+    """Coloca a logomarca bem clarinha no fundo, atrás do QR Code (marca d'água)."""
+    w, h = img.size
+    logo = Image.open(LOGO).convert("RGB").resize((w, w), Image.LANCZOS)
+    escuro = Image.new("RGB", (w, h), "black")   # fundo da logomarca é preto
+    escuro.paste(logo, (0, topo))
+    fundo = Image.blend(Image.new("RGB", (w, h), "white"), escuro, OPACIDADE_LOGO)
+    return ImageChops.multiply(img, fundo)
 
 
 if __name__ == "__main__":
